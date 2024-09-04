@@ -6,6 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
+# Ignore Chrome installer and other large files
+config/google-chrome-stable_current_*.deb
+*.deb
+
+
 # Distribution / packaging
 .Python
 build/
