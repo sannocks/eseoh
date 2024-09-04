@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>AI-Enhanced SEO Analysis</h1>
+<form method="POST">
+    {% csrf_token %}
+    <label for="url">Enter a URL to Analyze:</label>
+    <input type="url" name="url" placeholder="https://example.com" required>
+    <label for="keyword">Enter your target keyword (optional):</label>
+    <input type="text" name="keyword" placeholder="e.g., web development">
+
+    <button type="submit">Analyze</button>
+</form>
+{% endblock %}

@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-4">SEO Report for {{ url }}</h1>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>SEO Score</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Overall SEO Score:</strong> {{ seo_score }} / 100</p>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Generated Meta Description</h2>
+    </div>
+    <div class="card-body">
+        <p>{{ meta_description }}</p>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Generated Meta Keywords</h2>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            {% for keyword in meta_keywords_list %}
+            <li class="list-group-item">{{ keyword }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Manual SEO Data</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Title:</strong> {{ title }}</p>
+        <p><strong>Meta Description (Manual):</strong> {{ meta_description_manual }}</p>
+        <p><strong>Meta Keywords (Manual):</strong> {{ meta_keywords_manual }}</p>
+        <p><strong>Canonical URL:</strong> 
+            {% if canonical_url == 'No Canonical Tag Found' %}
+                <span class="text-danger">No Canonical Tag Found. Consider adding one to avoid duplicate content issues.</span>
+            {% else %}
+                {{ canonical_url }}
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Headings</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>H1 Tags:</strong> 
+            {% if h1_tags %}
+                <ul class="list-group">
+                    {% for h1 in h1_tags %}
+                    <li class="list-group-item">{{ h1 }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <span class="text-danger">No H1 Tags Found. Consider adding an H1 tag for better SEO.</span>
+            {% endif %}
+        </p>
+        <p><strong>H2 Tags:</strong> 
+            {% if h2_tags %}
+                <ul class="list-group">
+                    {% for h2 in h2_tags %}
+                    <li class="list-group-item">{{ h2 }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <span class="text-danger">No H2 Tags Found.</span>
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Technical SEO</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Meta Robots Tag:</strong> 
+            {% if robots_content == 'No Meta Robots Tag Found' %}
+                <span class="text-danger">No Meta Robots Tag Found. Consider adding one to control search engine crawling behavior.</span>
+            {% else %}
+                {{ robots_content }}
+            {% endif %}
+        </p>
+        <p><strong>SSL/HTTPS:</strong> {% if is_https %}<span class="text-success">Yes</span>{% else %}<span class="text-danger">No</span>{% endif %}</p>
+        <p><strong>Viewport Meta Tag:</strong> {{ viewport_content }}</p>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Broken Links</h2>
+    </div>
+    <div class="card-body">
+        {% if broken_links %}
+            <ul class="list-group">
+                {% for link in broken_links %}
+                <li class="list-group-item text-danger">Broken Link: {{ link }} - Fix this link or remove it to improve user experience and SEO.</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No Broken Links Found</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Social Media Optimization</h2>
+    </div>
+    <div class="card-body">
+        <h3>Open Graph Tags</h3>
+        <ul class="list-group">
+            {% for key, value in og_tags.items %}
+            <li class="list-group-item"><strong>{{ key }}:</strong> {{ value }}</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Twitter Tags</h3>
+        <ul class="list-group">
+            {% for key, value in twitter_tags.items %}
+            <li class="list-group-item"><strong>{{ key }}:</strong> {{ value }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+    
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Page Speed Insights</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Page Speed Score:</strong> {{ page_speed_score }} / 100</p>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Images</h2>
+    </div>
+    <div class="card-body">
+        {% if image_alts %}
+            <ul class="list-group">
+                {% for img in image_alts %}
+                <li class="list-group-item">{{ img.src }}: {{ img.alt }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No Images Found</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Content Analysis</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Word Count:</strong> {{ word_count }}{% if word_count < 300 %}<span class="text-danger"> - Your content is too short. Aim for at least 300 words for better SEO.</span>{% endif %}</p>
+        <p><strong>Keyword Density (for '{{ target_keyword }}'):</strong> {{ keyword_density }}%</p>
+        <p><strong>Readability Score:</strong> {{ readability_score }}</p>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Keyword Recommendations</h2>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            {% for keyword in keyword_recommendations %}
+            <li class="list-group-item">{{ keyword }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Links</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Internal Links:</strong> 
+            {% if internal_links %}
+                <ul class="list-group">
+                    {% for link in internal_links %}
+                    <li class="list-group-item">{{ link }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No Internal Links Found</p>
+            {% endif %}
+        </p>
+        <p><strong>External Links:</strong> 
+            {% if external_links %}
+                <ul class="list-group">
+                    {% for link in external_links %}
+                    <li class="list-group-item">{{ link }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No External Links Found</p>
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Structured Data</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Schema Markup:</strong> {% if schema_present %}<span class="text-success">Present</span>{% else %}<span class="text-danger">Not Found</span>{% endif %}</p>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>SEO Recommendations</h2>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            {% for recommendation in recommendations %}
+            <li class="list-group-item">{{ recommendation }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endblock content %}

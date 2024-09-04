@@ -1,0 +1,33 @@
+<h1>SEO Analysis for {{ url }}</h1>
+
+<h2>Generated Meta Description</h2>
+<p>{{ meta_description }}</p>
+
+<h2>Generated Meta Keywords</h2>
+
+<!-- <ol>
+    {% for keyword in meta_keywords %}
+    <li>{{ keyword }}</li>
+    {% endfor %}
+</ol> -->
+{{meta_keywords}}
+
+<h2>Keyword Recommendations</h2>
+<ul>
+    {% for keyword in keyword_recommendations %}
+    <li>{{ keyword }}</li>
+    {% endfor %}
+</ul>
+
+<h2>Readability Score</h2>
+<p>{{ readability_score }}</p>
+
+<h2>Additional SEO Insights</h2>
+<ul>
+    <li>Title: {{ title }}</li>
+    <li>Word Count: {{ word_count }}</li>
+    <li>Canonical URL: {{ canonical_url }}</li>
+    <li>Meta Robots: {{ robots_content }}</li>
+    <li>Schema Markup: {% if schema_present %} Yes {% else %} No {% endif %}</li>
+    <li>HTTPS Check: {% if is_https %} Yes {% else %} No {% endif %}</li>
+</ul>

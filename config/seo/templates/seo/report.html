@@ -1,0 +1,35 @@
+<!-- seo/templates/seo/report.html -->
+
+<h1>SEO Report for {{ url }}</h1>
+
+<h2>Basic SEO Elements</h2>
+<p><strong>Title:</strong> {{ title }}</p>
+<p><strong>Meta Description:</strong> {{ meta_description }}</p>
+<p><strong>Meta Keywords:</strong> {{ meta_keywords }}</p>
+<p><strong>Canonical URL:</strong> {{ canonical_url }}</p>
+
+<h2>Headings</h2>
+<p><strong>H1 Tags:</strong> {% if h1_tags %}<ul>{% for h1 in h1_tags %}<li>{{ h1 }}</li>{% endfor %}</ul>{% else %}No H1 Tags Found{% endif %}</p>
+<p><strong>H2 Tags:</strong> {% if h2_tags %}<ul>{% for h2 in h2_tags %}<li>{{ h2 }}</li>{% endfor %}</ul>{% else %}No H2 Tags Found{% endif %}</p>
+
+<h2>Technical SEO</h2>
+<p><strong>Meta Robots Tag:</strong> {{ robots_content }}</p>
+<p><strong>SSL/HTTPS:</strong> {% if is_https %}Yes{% else %}No{% endif %}</p>
+<p><strong>Viewport Meta Tag:</strong> {{ viewport_content }}</p>
+<p><strong>Broken Links:</strong> {% if broken_links %}<ul>{% for link in broken_links %}<li>{{ link }}</li>{% endfor %}</ul>{% else %}No Broken Links Found{% endif %}</p>
+
+<h2>Images</h2>
+<p><strong>Image Alt Attributes:</strong> {% if image_alts %}<ul>{% for img in image_alts %}<li>{{ img.src }}: {{ img.alt }}</li>{% endfor %}</ul>{% else %}No Images Found{% endif %}</p>
+
+<h2>Content Analysis</h2>
+<p><strong>Word Count:</strong> {{ word_count }}</p>
+<p><strong>Keyword Density (for '{{ keyword }}'):</strong> {{ keyword_density }}%</p>
+
+<h2>Links</h2>
+<p><strong>Internal Links:</strong> {% if internal_links %}<ul>{% for link in internal_links %}<li>{{ link }}</li>{% endfor %}</ul>{% else %}No Internal Links Found{% endif %}</p>
+<p><strong>External Links:</strong> {% if external_links %}<ul>{% for link in external_links %}<li>{{ link }}</li>{% endfor %}</ul>{% else %}No External Links Found{% endif %}</p>
+
+<h2>Structured Data</h2>
+<p><strong>Schema Markup:</strong> {% if schema_present %}Present{% else %}Not Found{% endif %}</p>
+
+
