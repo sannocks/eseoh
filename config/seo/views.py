@@ -5,29 +5,20 @@ from django.conf import settings
 import spacy
 from openai import OpenAI
 from urllib.parse import urljoin, urlparse
-
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+from playwright.sync_api import sync_playwright
 
 # Initialize OpenAI client and Spacy NLP model
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
 nlp = spacy.load('en_core_web_sm')
 
-# Function to fetch fully-rendered page content using Selenium
+# Function to fetch fully-rendered page content using Playwright
 def fetch_dynamic_page(url):
-    # Specify the Chrome binary path
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    chrome_options.binary_location = '/usr/bin/google-chrome'  # Specify the path to the Chrome binary
-
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-    driver.get(url)
-    
-    html = driver.page_source
-    driver.quit()
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)  # Headless mode
+        page = browser.new_page()
+        page.goto(url)
+        html = page.content()  # Fetch the full page content
+        browser.close()
     return html
 
 # Fetch PageSpeed data from Google's PageSpeed Insights API
